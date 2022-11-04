@@ -7,18 +7,24 @@ All services are offered country wide.
 <img src = "post.jpeg">
 
 ## PRODUCTS SOLD INCLUDE:
-SHOES
-<img src = "shoes.png" width="300px" height="300px">
 
-HOUSEHOLD ACCESSORIES
-<img src = "household.png" width="300px" height="300px"> 
+* SHOES
+* HOUSEHOLD ACCESSORIES
+
+
+<img src = "shoes.png" width="300px" height="300px" align="center" >
+
+
+<img src = "household.png" width="300px" height="300px" align="center"> 
 
 ## Technology used:
 
-### HTML
-### CSS
-### JAVASCRIPT
-### PHP
-### MYSQL
-## Authors
+* HTML
+* CSS
+* JAVASCRIPT
+* PHP
+* MYSQL
+
+
+Authors
 ### Wandhe Oyoyo <a href = "https://github.com/toitek">Visit developers github page</a>
