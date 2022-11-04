@@ -4,8 +4,8 @@ An online shop where you can order ,window shop , and purchase shoes, and house 
 <img src = "post.jpeg">
 
 ## PRODUCTS INCLUDE
-<img src = "shoes.png"> Shoes
-<img src = "household.png"> Household accessories
+<img src = "shoes.png" width="500px" height="500px"> Shoes
+<img src = "household.png" width="500px" height="500px"> Household accessories
 
 ## Technology used:
 
