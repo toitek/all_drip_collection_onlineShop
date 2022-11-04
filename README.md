@@ -25,6 +25,19 @@ All services are offered country wide.
 * PHP
 * MYSQL
 
+## INSTALLATION
+
+### Step 1:
+install php and mysql.
+
+### Step 2:
+Clone the repository
+
+In linux, run this command in your terminal:
+```sh
+git clone https://github.com/toitek/all_drip_collection_onlineShop.git
+```
+
 
 Authors
 ### Wandhe Oyoyo <a href = "https://github.com/toitek">Visit developers github page</a>
