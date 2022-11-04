@@ -1,5 +1,8 @@
 # ALL THINGS DRIP COLLECTION
-An online shop where you can order ,window shop , and purchase shoes, and house hold accessories.
+An online shop where you can:
+    order & purchase shoes & house-hold accessories.
+All services are offered country wide.
+
 
 <img src = "post.jpeg">
 
