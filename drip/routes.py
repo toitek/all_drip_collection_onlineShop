@@ -259,13 +259,13 @@ def reset_password_confirm(token):
                 return render_template('reset_password_confirm.html', token=token)"""
         
                    
-@app.route("/reset-password", methods=["GET", "POST"])
-@limiter.Limit("10 per minute")
+@app.route("/reset_password", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
 def reset_password():
     form = ForgotPasswordForm()
     if request.method == "GET":
         # Render a form for the user to enter their email address.
-        return render_template("reset-password.html")
+        return render_template("reset_password.html", form=form)
     else:
          # Handle the form submission.
         email = request.form["email"]
@@ -274,6 +274,8 @@ def reset_password():
         if user:
             # Generate a password reset token and send it to the user via email.
             token = s.dumps(email, salt="password-reset")
+
+            
             """ Save the token and the time it was generated in the database
             user.reset_password_token = token
             user.reset_password_token_timestamp = datetime.utcnow()
