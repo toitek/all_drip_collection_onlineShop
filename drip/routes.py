@@ -1,13 +1,16 @@
 from drip import app, limiter, s, mail
 from flask import render_template, redirect, url_for, flash, request,session
-from drip.models import User, Product, Sale
+from drip.models import User, Product, Sale, Cart,CartItem
 from drip.forms import RegisterForm, LoginForm, AddProductForm, DeleteProductForm, UpdateProductForm, ForgotPasswordForm
 from drip import db
-from flask_login import login_user, logout_user, login_required
+from flask import current_app
+from flask_login import login_user, logout_user, login_required,current_user
 from flask_mail import Mail, Message
 from datetime import datetime, timedelta, date, time, timezone, tzinfo
 from itsdangerous import SignatureExpired
 from flask_limiter.util import get_remote_address
+
+
 
 
 @app.route('/')
@@ -330,4 +333,33 @@ def reset_password_with_token(token):
            return redirect("/shop_page")
  
     
+@app.route("/add-to-cart/int:product_id", methods=["POST"])
+@login_required
+def add_to_cart(product_id):
+ # get current user id from current signed in user
+    user_id= current_user.id
+    if not user_id:
+            return "Please sign in to add product to cart"
 
+ # default quantity to 1 if not specified
+    quantity = request.form.get("quantity", 1)
+
+# check if user already has a cart, if not create a new cart
+    cart = Cart.query.filter_by(user_id=user_id).first()
+    if not cart:
+          cart = Cart(user_id=user_id)
+          db.session.add(cart)
+          db.session.commit()
+
+# check if product is already in cart, if not add it to cart
+# if it is already in cart, update the quantity
+    cart_item = CartItem.query.filter_by(cart_id=cart.id, product_id=product_id).first()
+    if not cart_item:
+           cart_item = CartItem(cart_id=cart.id, product_id=product_id, quantity=quantity)
+           db.session.add(cart_item)
+           db.session.commit()
+    else:
+         cart_item.quantity += quantity
+         db.session.commit()
+
+         return "Product added to cart"
