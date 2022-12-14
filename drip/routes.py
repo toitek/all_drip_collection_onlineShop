@@ -282,7 +282,7 @@ def reset_password():
             db.session.commit()"""
 
 
-            reset_link = url_for('reset_password_confirm', token=token, _external=True)
+            reset_link = url_for('password_reset_sent', token=token, _external=True)
 
             msg = Message('Password Reset Request', sender='noreply@example.com', recipients=[email])
             msg.body = f'To reset your password, visit the following link: {reset_link}'
@@ -296,7 +296,7 @@ def password_reset_sent():
     # Display a message to the user that the password reset email has been sent.
     return render_template("password-reset-sent.html")
 
-@app.route("/reset-password/<token>", methods=["GET", "POST"])
+@app.route("/password_reset_sent/<token>", methods=["GET", "POST"])
 def reset_password_with_token(token):
     try:
         # Verify the password reset token and get the email address it corresponds to.
