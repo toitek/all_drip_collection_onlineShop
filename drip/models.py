@@ -78,7 +78,7 @@ class Cart(db.Model):
     cart_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    
 
     def __repr__(self):
         return f'Cart {self.cart_id}'
@@ -86,8 +86,8 @@ class Cart(db.Model):
 class CartItem(db.Model):
    tablename = "cart_items"
    CartItem_id = db.Column(db.Integer, primary_key=True)
-   cart_id = db.Column(db.Integer, db.ForeignKey("carts.id"), nullable=False)
-   product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
+   cart_id = db.Column(db.Integer, db.ForeignKey("cart.cart_id"), nullable=False)
+   product_id = db.Column(db.Integer, db.ForeignKey("product.product_id"), nullable=False)
    quantity = db.Column(db.Integer, nullable=False)
 
    def __repr__(self):
