@@ -20,7 +20,7 @@ s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["10 per minute", "50 per hour"]
+    default_limits=["10000 per minute", "50000000 per hour"]
 )
 
 
@@ -29,7 +29,7 @@ app.config['SECRET_KEY']= '88d981b544da6ddbfbb1b967'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'georgewandhe@gmail.com'
-app.config['MAIL_PASSWORD'] = '1964#British'
+app.config['MAIL_PASSWORD'] = 'Chat@254'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 

@@ -9,6 +9,8 @@ from flask_mail import Mail, Message
 from datetime import datetime, timedelta, date, time, timezone, tzinfo
 from itsdangerous import SignatureExpired
 from flask_limiter.util import get_remote_address
+from flask_paginate import Pagination
+
 
 
 
@@ -363,3 +365,54 @@ def add_to_cart(product_id):
          db.session.commit()
 
          return "Product added to cart"
+
+"""The first route /cart/products/table is used to display the products in a user's cart in a table. The table is sorted according to the value of the sort query parameter and can be searched using the q query parameter. The route is decorated with the @login_required decorator, which means that only logged-in users can access this route. The route also supports pagination.
+
+The second route /cart/products/table, which is the same as the first route but has a POST method specified, is used to update the quantity of a product in the user's cart.
+
+The third route /cart/products/table/<int:product_id>/delete, which is also a POST route, is used to delete a product from the user's cart. The product to be deleted is specified using its id, which is passed as a URL parameter."""
+
+
+@app.route('/cart/products/table')
+@login_required
+def view_cart_products_table():
+    user_id = current_user.get_id()
+    search_query = request.args.get('q')
+    sort_by = request.args.get('sort')
+    if sort_by == 'price':
+        cart_items = Cart.query.filter_by(user_id=user_id).order_by(Cart.product.price.asc())
+    elif sort_by == 'quantity':
+        cart_items = Cart.query.filter_by(user_id=user_id).order_by(Cart.quantity.asc())
+    else:
+        cart_items = Cart.query.filter_by(user_id=user_id)
+    if search_query:
+        cart_items = cart_items.filter(Cart.product.name.like('%' + search_query + '%'))
+    cart_items = cart_items.all()
+    for item in cart_items:
+        item.total_price = item.product.price * item.quantity
+    total_cost = sum(item.total_price for item in cart_items)
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    pagination = Pagination(page=page, per_page=per_page, total=len(cart_items), css_framework='bootstrap4')
+    paginated_cart_items = cart_items[(page - 1) * per_page:page * per_page]
+    return render_template('cart_products_table.html', paginated_cart_items=paginated_cart_items, pagination=pagination, total_cost=total_cost)
+
+@app.route('/cart/products/table', methods=['POST'])
+@login_required
+def update_cart_product_quantity():
+    user_id = current_user.get_id()
+    product_id = request.form.get('product_id')
+    quantity = request.form.get('quantity')
+    cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
+    cart_item.quantity = quantity
+    db.session.commit()
+    return redirect(url_for('view_cart_products_table'))
+
+@app.route('/cart/products/table/<int:product_id>/delete', methods=['POST'])
+@login_required
+def delete_cart_product(product_id):
+    user_id = current_user.get_id()
+    cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
+    db.session.delete(cart_item)
+    db.session.commit()
+    return redirect(url_for('view_cart_products_table'))
