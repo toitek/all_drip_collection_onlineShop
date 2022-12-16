@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, StringField, SubmitField, PasswordField, TextAreaField, FileField
+from wtforms import IntegerField, StringField, SubmitField, PasswordField, TextAreaField, FileField, SelectField
 from wtforms.validators import Length, DataRequired, EqualTo, Email, ValidationError, DataRequired
+
 from drip.models import User, Product
 
 
@@ -22,12 +23,14 @@ class RegisterForm(FlaskForm):
         if phone_number:
             raise ValidationError('Phone number already exists! Please try a different phone number.')
 
+    gender = [('male', 'Male'), ('female', 'Female'), ('intersex', 'Intersex')]
 
     first_name = StringField(label='First name:', validators=[DataRequired()])
     last_name = StringField(label='Last name:', validators=[DataRequired()])
     username = StringField(label='Username:', validators=[Length(min=4,max=30), DataRequired()])
+    select = SelectField(label='Select a your gender:', choices=gender, validators=[DataRequired()])
     email = StringField(label='Email:', validators=[Email(), DataRequired()])
-    image = FileField(label='Image:')
+    image = FileField(label='Image:', validators=[DataRequired()])
     phone_number = StringField(label = 'Phonenumber', validators=[Length(min=10, max=10), DataRequired()])
     password1 = PasswordField(label='Password:', validators=[Length(min=7), DataRequired()])
     password2 = PasswordField(label ='Confirm password:', validators=[EqualTo('password1'), DataRequired()])
@@ -59,7 +62,7 @@ class UpdateProductForm(FlaskForm):
     old_price=IntegerField(label='Old price:', validators=[DataRequired()])
     price=IntegerField(label='Price:', validators=[DataRequired()])
     stock=IntegerField(label='Stock:', validators=[DataRequired()])
-    image=StringField(label='Image:', validators=[DataRequired()])
+    image = FileField(label='Image:', validators=[DataRequired()])
     category=StringField(label='Category:', validators=[DataRequired()])
     submit = SubmitField(label='Update product')
 
@@ -71,3 +74,4 @@ class ResetPasswordForm(FlaskForm):
     password1 = PasswordField(label='Password:', validators=[Length(min=10), DataRequired()])
     password2 = PasswordField(label ='Confirm password:', validators=[EqualTo('password1'), DataRequired()])
     submit = SubmitField(label='Reset password')
+

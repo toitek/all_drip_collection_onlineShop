@@ -93,7 +93,7 @@
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
 <div class="col-md-4 mb-5">
     <h5 class="font-weight-bold text-dark mb-4">Register</h5>
-    <form method="POST" class="form-register ">
+    <form method="POST" class="form-register "  enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.first_name.label()}}
@@ -107,6 +107,14 @@
                 {{ form.username.label()}}
                 {{ form.username(class = "form-control  justify-content-md-center py-4", placeholder="didi254")}}
                 </div>
+            <div class="form-group">
+                {{form.select.label()}}
+                {{ form.select(class = "form-control  justify-content-md-center py-4") }}
+                </div>
+            <div class="form-group">
+                    {{ form.image.label() }}
+                    {{ form.image(class="form-control justify-content-md-center py-4") }}
+            </div>
         <div class="form-group">
         {{ form.email.label()}}
         {{ form.email(class = "form-control  justify-content-md-center py-4", placeholder="dummy@gtoitek.com")}}

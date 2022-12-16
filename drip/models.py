@@ -10,9 +10,11 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.String(100), nullable=False)
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     username = db.Column(db.String(20), unique=True, nullable=False)
+    gender=db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     password_hash = db.Column(db.String(60), nullable=False)

@@ -10,6 +10,9 @@ from datetime import datetime, timedelta, date, time, timezone, tzinfo
 from itsdangerous import SignatureExpired
 from flask_limiter.util import get_remote_address
 from flask_paginate import Pagination
+from werkzeug.utils import secure_filename
+import os
+
 
 
 
@@ -46,16 +49,27 @@ def detail_page():
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
     form = RegisterForm()
+    form.image.allowed_extensions = ['png', 'jpg', 'jpeg']
+    if request.method == 'POST':
+        image = request.files.get('image')
+    try:
+      if image.filename != '':
+         filename = secure_filename(image.filename)
+         image.save(os.path.join(app.root_path, 'static', 'img', 'profiles', filename))
+    except UnboundLocalError:
+        pass
     if form.validate_on_submit():
         remote_address = get_remote_address()
         user_to_create = User(
             first_name = form.first_name.data,
             last_name = form.last_name.data,
             username = form.username.data,
+            gender = form.select.data,
             email = form.email.data,
             phone_number = form.phone_number.data,
             password = form.password1.data,
             ip_address=remote_address,
+            image=filename
         )
         db.session.add(user_to_create)
         db.session.commit()
@@ -94,6 +108,15 @@ def base_page():
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
     form = AddProductForm()
+    form.image.allowed_extensions = ['png', 'jpg', 'jpeg']
+    if request.method == 'POST':
+        image = request.files.get('image')
+    try:
+      if image.filename != '':
+         filename = secure_filename(image.filename)
+         image.save(os.path.join(app.root_path, 'static', 'img', 'products', filename))
+    except UnboundLocalError:
+        pass
     if form.validate_on_submit():
         product_to_create = Product(
             name = form.name.data,
@@ -101,8 +124,8 @@ def add_product():
             old_price = form.old_price.data,
             price = form.price.data,
             stock = form.stock.data,
-            image = form.image.data,
             category = form.category.data,
+            image = filename
         )
         db.session.add(product_to_create)
         db.session.commit()
@@ -416,3 +439,5 @@ def delete_cart_product(product_id):
     db.session.delete(cart_item)
     db.session.commit()
     return redirect(url_for('view_cart_products_table'))
+
+
