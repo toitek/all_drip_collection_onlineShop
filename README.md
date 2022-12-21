@@ -22,13 +22,13 @@ All services are offered country wide.
 * HTML
 * CSS
 * JAVASCRIPT
-* PHP
+* Flask
 * MYSQL
 
 ## INSTALLATION
 
 ### Step 1:
-install php and mysql.
+install FLASK and mysql.
 
 ### Step 2:
 Clone the repository
